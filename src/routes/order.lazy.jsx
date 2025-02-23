@@ -25,7 +25,7 @@ function Order() {
   async function checkout() {
     setLoading(true);
 
-    await fetch(`${apiURl}/order`, {
+    await fetch(`${apiURl}/api/order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,7 +45,7 @@ function Order() {
   }
 
   async function fetchPizzaTypes() {
-    const pizzaRes = await fetch(`${apiURl}/pizzas`);
+    const pizzaRes = await fetch(`${apiURl}/api/pizzas`);
     const pizzaJson = await pizzaRes.json();
 
     setPizzaTypes(pizzaJson);
