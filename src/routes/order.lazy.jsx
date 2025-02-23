@@ -13,6 +13,8 @@ const intl = new Intl.NumberFormat("en-US", {
   currency: "USD",
 });
 
+const apiURl = import.meta.env.VITE_API_URL;
+
 function Order() {
   const [pizzaTypes, setPizzaTypes] = useState([]);
   const [pizzaType, setPizzaType] = useState("pepperoni");
@@ -23,7 +25,7 @@ function Order() {
   async function checkout() {
     setLoading(true);
 
-    await fetch("/api/order", {
+    await fetch(`${apiURl}/order`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,7 +45,7 @@ function Order() {
   }
 
   async function fetchPizzaTypes() {
-    const pizzaRes = await fetch("/api/pizzas");
+    const pizzaRes = await fetch(`${apiURl}/pizzas`);
     const pizzaJson = await pizzaRes.json();
 
     setPizzaTypes(pizzaJson);
@@ -54,20 +56,15 @@ function Order() {
     fetchPizzaTypes();
   }, []);
 
+  function addToCart() {
+    setCart([...cart, { pizza: selectedPizza, size: pizzaSize, price }]);
+  }
+
   return (
     <div className="order-page">
       <div className="order">
         <h2>Create Order</h2>
-        <form
-          action=""
-          onSubmit={(e) => {
-            e.preventDefault();
-            setCart([
-              ...cart,
-              { pizza: selectedPizza, size: pizzaSize, price },
-            ]);
-          }}
-        >
+        <form action={addToCart}>
           <div>
             <div>
               <label htmlFor="pizza-type">Pizza Type</label>
